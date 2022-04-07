@@ -5,10 +5,20 @@ from ..mail import Mail
 
 
 class InboxKitten(Mail):
+    """
+    Class for work with https://inboxkitten.com/
+    """
     def __init__(self, proxy=None):
         super().__init__(proxy)
 
     def set_mail(self, mail):
+        """
+        Use custom email address.
+
+        :param mail: Email address.
+        :return: Email address.
+        :rtype: str
+        """
         return super()._set_mail(mail) + '@inboxkitten.com'
 
     def get_inbox(self):

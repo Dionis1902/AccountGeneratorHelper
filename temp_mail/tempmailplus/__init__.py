@@ -7,10 +7,22 @@ from .domains import Domains
 
 
 class TempMailPlus(Mail):
+    """
+    Class for work with https://tempmail.plus
+    """
     def __init__(self, proxy=None):
         super().__init__(proxy)
 
     def set_mail(self, mail, domain: Domains = None):
+        """
+        Use custom email address with custom domain.
+
+        :param mail: Email address.
+        :param domain: Domain.
+        :return: Email address.
+        :rtype: str
+        """
+
         if not domain:
             domain = Domains[random.choice(Domains._member_names_)]
         return super()._set_mail(mail + '@' + domain.value)
