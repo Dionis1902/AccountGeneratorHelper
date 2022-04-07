@@ -9,7 +9,8 @@ class Letter:
         self._subject = subject
         self._send_time = send_time
         self._proxies = proxies
-        self._latter = None
+        self._letter = None
+        self._letter_id = None
 
     @property
     def email(self):
@@ -43,7 +44,6 @@ class Letter:
     def send_time(self):
         """
         :return: Datetime when letter sent.
-        :rtype: datetime.datetime
         """
         return self._send_time
 
@@ -63,4 +63,4 @@ class Letter:
                                                                                             '%Y-%m-%d %H:%M:%S'))
 
     def __hash__(self):
-        return hash(self.__repr__())
+        return hash(self._letter_id)

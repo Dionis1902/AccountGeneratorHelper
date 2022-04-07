@@ -12,32 +12,30 @@ class Mail:
         """
         :param proxy: (optional) Proxy string.
         """
-        self._mail = None
+        self._email = None
         self._proxies = {'http': proxy, 'https': proxy} if proxy else None
         self._handlers = []
 
-    def get_mail(self):
+    def get_email(self, *args, **kwargs):
         """
         Generates a random address and returns it.
 
         :return: Random email address.
-        :rtype: str
         """
-        return self.set_mail(random_string())
+        return self.set_email(random_string())
 
-    def set_mail(self, *args, **kwargs):
+    def set_email(self, *args, **kwargs):
         pass
 
-    def _set_mail(self, mail):
-        self._mail = mail
-        return self._mail
+    def _set_email(self, mail):
+        self._email = mail
+        return self._email
 
     def get_inbox(self):
         """
         Return all letters from inbox.
 
-        :return: :class:`Letter <Letter>` object
-        :rtype: temp_mail.mail.letter.Letter
+        :return: List of Letter objects.
         """
         pass
 
@@ -54,8 +52,7 @@ class Mail:
         """
         def wrapper(handler):
             self._handlers.append({'handler': handler, 'name': name, 'from_email': from_email,
-                                   'subject': subject, 're_subject': re_subject,
-                                   'time': datetime.now()})
+                                   'subject': subject, 're_subject': re_subject})
 
         return wrapper
 
@@ -64,8 +61,7 @@ class Mail:
             return (not handler['name'] or handler['name'] == _letter.name) and \
                    (not handler['from_email'] or handler['from_email'] == _letter.from_email) and \
                    (not handler['subject'] or handler['subject'] == _letter.subject) and \
-                   (not handler['re_subject'] or re.findall(handler['re_subject'], _letter.subject)) and \
-                   (not handler['time'] or handler['time'] < _letter.send_time)
+                   (not handler['re_subject'] or re.findall(handler['re_subject'], _letter.subject))
 
         for _handler in self._handlers:
             if __is_valid(_handler):
@@ -77,13 +73,13 @@ class Mail:
 
         :param timeout: (Optional) Timeout between inbox update, default 10 seconds.
         """
-        letters = []
+        letters = [hash(_letter) for _letter in self.get_inbox()]
         try:
             while True:
+                time.sleep(timeout)
                 for _letter in self.get_inbox():
                     if hash(_letter) not in letters:
                         letters.append(hash(_letter))
                         self._letter_handler(_letter)
-                time.sleep(timeout)
         except KeyboardInterrupt:
             pass

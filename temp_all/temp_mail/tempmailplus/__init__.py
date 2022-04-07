@@ -13,25 +13,24 @@ class TempMailPlus(Mail):
     def __init__(self, proxy=None):
         super().__init__(proxy)
 
-    def set_mail(self, mail, domain: Domains = None):
+    def set_email(self, email, domain: Domains = None):
         """
         Use custom email address with custom domain.
 
-        :param mail: Email address.
-        :param domain: Domain.
+        :param email: Email address.
+        :param domain: Domain of email address, set None for random.
         :return: Email address.
-        :rtype: str
         """
 
         if not domain:
             domain = Domains[random.choice(Domains._member_names_)]
-        return super()._set_mail(mail + '@' + domain.value)
+        return super()._set_email(email + '@' + domain.value)
 
     def get_inbox(self):
-        if not self._mail:
+        if not self._email:
             raise NotSetEmail()
 
-        r = requests.get(f'https://tempmail.plus/api/mails?email={self._mail}&limit=100')
+        r = requests.get(f'https://tempmail.plus/api/mails?email={self._email}&limit=100')
         if r.status_code == 200:
-            return [Letter(self._mail, _letter, self._proxies) for _letter in r.json()['mail_list']]
+            return [Letter(self._email, _letter, self._proxies) for _letter in r.json()['mail_list']]
         return []
