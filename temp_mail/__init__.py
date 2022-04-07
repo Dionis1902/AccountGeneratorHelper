@@ -1,0 +1,1 @@
+from .inboxkitten import InboxKittenMail
