@@ -1,7 +1,7 @@
 import re
 import time
 from datetime import datetime
-from temp_mail.utilities import random_string
+from ..utilities import random_string
 
 
 class Mail:
@@ -13,28 +13,31 @@ class Mail:
     def get_mail(self):
         return self.set_mail(random_string())
 
-    def set_mail(self, mail):
+    def set_mail(self, *args, **kwargs):
+        pass
+
+    def _set_mail(self, mail):
         self._mail = mail
         return self._mail
 
     def get_inbox(self):
         pass
 
-    def letter_handler(self, sender_name='', sender_mail='', subject='', re_subject='', only_new: bool = True):
+    def letter_handler(self, sender_name='', sender_mail='', subject='', re_subject=''):
         def wrapper(handler):
-            self._handlers.append({'handler': handler, 'sender_name': sender_name, 'sender_mail': sender_mail,
-                                    'subject': subject, 're_subject': re_subject,
-                                    'time': datetime.now() if only_new else None})
+            self._handlers.append({'handler': handler, 'from_name': sender_name, 'from_email': sender_mail,
+                                   'subject': subject, 're_subject': re_subject,
+                                   'time': datetime.now()})
 
         return wrapper
 
     def _letter_handler(self, _letter):
         def __is_valid(handler):
-            return (not handler['sender_name'] or handler['sender_name'] == _letter.sender_name) and \
-                    (not handler['sender_mail'] or handler['sender_mail'] == _letter.sender_mail) and \
-                    (not handler['subject'] or handler['subject'] == _letter.subject) and \
-                    (not handler['re_subject'] or re.findall(handler['re_subject'], _letter.subject)) and \
-                    (not handler['time'] or handler['time'] < _letter.send_time)
+            return (not handler['from_name'] or handler['from_name'] == _letter.from_name) and \
+                   (not handler['from_email'] or handler['from_email'] == _letter.from_email) and \
+                   (not handler['subject'] or handler['subject'] == _letter.subject) and \
+                   (not handler['re_subject'] or re.findall(handler['re_subject'], _letter.subject)) and \
+                   (not handler['time'] or handler['time'] < _letter.send_time)
 
         for _handler in self._handlers:
             if __is_valid(_handler):

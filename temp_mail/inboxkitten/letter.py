@@ -1,11 +1,12 @@
 import re
 import requests
 from ..mail import letter
+from datetime import datetime
 
 
 class Letter(letter.Letter):
     def __init__(self, url, headers, timestamp, proxies):
-        super().__init__(headers['to'], headers['from'], headers['subject'], timestamp, proxies)
+        super().__init__(headers['to'], *re.findall(r'(.*) <(.*)>', headers['from'])[0], headers['subject'], datetime.fromtimestamp(timestamp), proxies)
         self.__letter_id = '-'.join(re.findall(r'https://(.*)\.api\.mailgun\.net/v3/domains/inboxkitten\.com/messages/(.*)', url)[0])
 
     @property

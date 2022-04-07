@@ -1,27 +1,24 @@
-import datetime
-import re
-
-
 class Letter:
-    def __init__(self, mail, sender, subject, timestamp, proxies):
-        self._mail = mail
-        self._sender_name, self._sender_mail = re.findall(r'(.*) <(.*)>', sender)[0]
+    def __init__(self, email, from_name, from_email, subject, send_time, proxies):
+        self._email = email
+        self._from_name = from_name
+        self._from_email = from_email
         self._subject = subject
-        self._send_time = datetime.datetime.fromtimestamp(timestamp)
+        self._send_time = send_time
         self._proxies = proxies
         self._latter = None
 
     @property
-    def mail(self):
-        return self._mail
+    def email(self):
+        return self._email
 
     @property
-    def sender_name(self):
-        return self._sender_name
+    def from_name(self):
+        return self._from_name
 
     @property
-    def sender_mail(self):
-        return self._sender_mail
+    def from_email(self):
+        return self._from_email
 
     @property
     def subject(self):
@@ -36,9 +33,9 @@ class Letter:
         return ''
 
     def __repr__(self):
-        return '<Letter seder_name={} seder_mail={} mail={} subject={} send_time={}>'.format(self._sender_name,
-                                                                                             self._sender_mail,
-                                                                                             self._mail,
+        return '<Letter from_name={} from_email={} email={} subject={} send_time={}>'.format(self._from_name,
+                                                                                             self._from_email,
+                                                                                             self._email,
                                                                                              self._subject,
                                                                                              self._send_time.strftime('%Y-%m-%d %H:%M:%S'))
 
