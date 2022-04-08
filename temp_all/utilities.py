@@ -1,4 +1,5 @@
 import random
+import re
 import string
 from urllib.parse import quote
 from datetime import timedelta
@@ -31,3 +32,7 @@ def str_to_timedelta(string_time):
     elif 'year' in string_time:
         return timedelta(days=_time*365)
     return timedelta()
+
+
+def camel_to_snake(text):
+    return re.sub(r'(?<!^)(?=[A-Z])', '_', text).lower()
