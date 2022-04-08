@@ -1,13 +1,14 @@
-from temp_all import TempMailPlus
-from temp_all.temp_mail.tempmailplus import Domains
+from account_generator_helper import TempMailPlus
+from account_generator_helper.temp_mail.tempmailplus import Domains
 
 
 mail = TempMailPlus()
-print('Mail :', mail.set_email('test-mail', Domains.MAILTO_PLUS))
+print('Mail :', mail.set_email('test-mail', Domains.MAILTO_PLUS))  # Mail : test-mail@mailto.plus
+
 
 for _letter in mail.get_inbox():
-    print('Letter :', _letter)
-    print('Letter content :', _letter.letter)
+    print('Letter :', _letter)  # Letter : <Letter ...>
+    print('Letter content :', _letter.letter)  # Letter content : ...
 
 
 @mail.letter_handler()

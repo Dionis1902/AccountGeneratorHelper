@@ -3,7 +3,7 @@ import requests
 from ..exceptions import ProblemWithGetEmail
 from ..mail import Mail
 from .domains import Domains
-from temp_all.utilities import random_string, quote
+from account_generator_helper.utilities import random_string, quote
 from .letter import Letter
 
 headers = {

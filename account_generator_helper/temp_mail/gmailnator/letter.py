@@ -2,7 +2,7 @@ import re
 import requests
 from ..mail import letter
 from datetime import datetime
-from temp_all.utilities import unescape
+from account_generator_helper.utilities import unescape
 
 
 class Letter(letter.Letter):

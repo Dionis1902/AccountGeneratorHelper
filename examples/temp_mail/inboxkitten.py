@@ -1,12 +1,13 @@
-from temp_all import InboxKitten
+from account_generator_helper import InboxKitten
 
 
 mail = InboxKitten()
-print('Mail :', mail.set_email('test-mail'))
+print('Mail :', mail.set_email('test-mail'))  # Mail : test-mail@inboxkitten.com
+
 
 for _letter in mail.get_inbox():
-    print('Letter :', _letter)
-    print('Letter content :', _letter.letter)
+    print('Letter :', _letter)  # Letter : <Letter ..>
+    print('Letter content :', _letter.letter)  # Letter content : ...
 
 
 @mail.letter_handler()

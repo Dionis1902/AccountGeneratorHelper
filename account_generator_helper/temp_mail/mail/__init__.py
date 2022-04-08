@@ -1,6 +1,6 @@
 import re
 import time
-from temp_all.utilities import random_string
+from account_generator_helper.utilities import random_string
 
 
 class Mail:

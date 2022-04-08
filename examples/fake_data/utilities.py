@@ -1,5 +1,6 @@
-from temp_all import get_password
+from account_generator_helper import get_password
 
+# Generate password
 print(get_password())  # i)7\\yc4EsvTQJG'
 
 print(get_password(numbers=False))  # a<}>?;xZr!Ne{^^H

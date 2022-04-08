@@ -1,12 +1,14 @@
-from temp_all import GmailNator
-from temp_all.temp_mail.gmailnator import Domains
+from account_generator_helper import GmailNator
+from account_generator_helper.temp_mail.gmailnator import Domains
 
 mail = GmailNator()
-print('Mail :', mail.set_email('test-mail', Domains.GMAILNATOR_COM))
+print('Mail :', mail.set_email('test-mail', Domains.GMAILNATOR_COM))  # Mail : test-mail@gmailnator.com
+
 
 for _letter in mail.get_inbox():
-    print('Letter :', _letter)
-    print('Letter content :', _letter.letter)
+    print('Letter :', _letter)  # Letter : <Letter ..>
+    print('Letter content :', _letter.letter)  # Letter content : ...
+
 
 @mail.letter_handler()
 def new_mail(letter):
