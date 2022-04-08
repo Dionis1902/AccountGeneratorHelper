@@ -15,7 +15,7 @@ setup(
               'account_generator_helper.temp_phone', 'account_generator_helper.temp_phone.receive',
               'account_generator_helper.temp_phone.receive_sms'],
     url='https://github.com/DioniS1902/AccountGeneratorHelper',
-    license='',
+    license='MIT',
     author='Dionis1902',
     author_email='den70007.ua@gmail.com',
     description='This library is helpful when creating accounts, it has everything you need for this',
