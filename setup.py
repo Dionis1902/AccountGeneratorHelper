@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='account_generator_helper',
-    version='1.0.0',
+    version='1.0.1',
     packages=['account_generator_helper', 'account_generator_helper.fake_data', 'account_generator_helper.temp_mail',
               'account_generator_helper.temp_mail.mail', 'account_generator_helper.temp_mail.gmailnator',
               'account_generator_helper.temp_mail.inboxkitten', 'account_generator_helper.temp_mail.tempmailplus',
