@@ -13,7 +13,7 @@ setup(
               'account_generator_helper.temp_phone.receive_sms'],
     url='https://github.com/DioniS1902/account_generator_helper',
     license='',
-    author='Dionis',
+    author='Dionis1902',
     author_email='den70007.ua@gmail.com',
     description='This library is helpful when creating accounts, it has everything you need for this',
     install_requires=required
