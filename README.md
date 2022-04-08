@@ -7,7 +7,7 @@
 <p align="center"><i>Generate passwords and etc.</i></p>
 
 # Supported services
-### Services with temporary mail
+### Services for temporary mail
 - [x] [Inbox Kitten](https://inboxkitten.com/)
 - [x] [TempMail +](https://tempmail.plus/)
 - [x] [GmailNator](https://www.gmailnator.com/) *(Temp gmail email)*
@@ -34,7 +34,7 @@ $ pip install git+https://github.com/DioniS1902/AccountGeneratorHelper.git
 ```
 It is generally recommended using the first option.
 
-*While the API is production-ready, it is still under development, and it has regular updates, do not forget to update it regularly by calling*
+*While the library is production-ready, it is still under development, and it has regular updates, do not forget to update it regularly by calling*
 ```
 $ pip install account-generator-helper --upgrade
 ```
