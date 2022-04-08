@@ -2,12 +2,7 @@ import re
 import requests
 from ..mail import letter
 from datetime import datetime
-
-try:
-    from html import unescape
-except ImportError:
-    from html.parser import HTMLParser
-    unescape = HTMLParser().unescape
+from temp_all.utilities import unescape
 
 
 class Letter(letter.Letter):

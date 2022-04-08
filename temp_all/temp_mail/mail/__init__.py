@@ -1,7 +1,6 @@
 import re
 import time
-from datetime import datetime
-from ..utilities import random_string
+from temp_all.utilities import random_string
 
 
 class Mail:

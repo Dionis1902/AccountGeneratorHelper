@@ -1,10 +1,9 @@
 import random
-import urllib.parse
 import requests
 from ..exceptions import ProblemWithGetEmail
 from ..mail import Mail
 from .domains import Domains
-from ..utilities import random_string
+from temp_all.utilities import random_string, quote
 from .letter import Letter
 
 headers = {
@@ -53,7 +52,7 @@ class GmailNator(Mail):
         return self._set_email(random.choice(domain.value).format(email))
 
     def get_inbox(self):
-        payload = self.__get_payload('LoadMailList', f'&Email_address={urllib.parse.quote(self._email)}')
+        payload = self.__get_payload('LoadMailList', f'&Email_address={quote(self._email)}')
         r = self.__s.post('https://www.gmailnator.com/mailbox/mailboxquery', headers=headers, data=payload)
         if r.status_code == 200:
             return [Letter(self._email, _letter['content'], self._proxies) for _letter in r.json() if 'inbox' in _letter['content']]
