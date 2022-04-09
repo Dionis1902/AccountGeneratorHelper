@@ -1,3 +1,11 @@
+<p align="center">
+    <img src="https://img.shields.io/github/license/DioniS1902/AccountGeneratorHelper" />
+    <img src="https://pepy.tech/badge/account-generator-helper/month" />
+    <img src="https://img.shields.io/github/stars/DioniS1902/AccountGeneratorHelper" />
+    <img src="https://img.shields.io/pypi/v/account-generator-helper" />
+    <img src="https://img.shields.io/badge/python-3.x-blue" />
+</p>
+
 # <p align="center">AccountGeneratorHelper
 
 <h3 align="center">Library to facilitate accounts generation.</h3>
