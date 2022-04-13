@@ -1,7 +1,6 @@
 from setuptools import setup
 from pathlib import Path
 
-import account_generator_helper
 
 this_directory = Path(__file__).parent
 
@@ -10,7 +9,7 @@ required = (this_directory / 'requirements.txt').read_text().splitlines()
 
 setup(
     name='account_generator_helper',
-    version=account_generator_helper.__version__,
+    version='1.0.3',
     packages=['account_generator_helper', 'account_generator_helper.fake_data', 'account_generator_helper.temp_mail',
               'account_generator_helper.temp_mail.mail', 'account_generator_helper.temp_mail.gmailnator',
               'account_generator_helper.temp_mail.inboxkitten', 'account_generator_helper.temp_mail.tempmailplus',
