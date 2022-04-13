@@ -18,11 +18,11 @@ class Country:
         """
         return self._country
 
-    def get_numbers(self) -> list[Phone]:
+    def get_numbers(self):
         """
         :return: List of phone numbers.
         """
-        pass
+        return []
 
     def __repr__(self):
         return '<Country country={}>'.format(self._country.name)

@@ -16,13 +16,13 @@ class Receive:
         self._s.headers.update(headers)
         self._countries = []
 
-    def get_counties(self) -> list[Country]:
+    def get_counties(self):
         """
         :return: List of counties.
         """
-        pass
+        return []
 
-    def get_country(self, country: Counties) -> Country:
+    def get_country(self, country: Counties):
         """
         Method returns object of the country, from this object you can get the phone number of this country.
 
