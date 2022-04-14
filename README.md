@@ -11,6 +11,8 @@
 <h3 align="center">Library to facilitate accounts generation.</h3>
 <p align="center"><i>Unofficial API for temp email services.</i></p>
 <p align="center"><i>Receive SMS from free services.</i></p>
+<p align="center"><i>Parsing and testing proxies.</i></p>
+<p align="center"><i>Free solving regular text captcha.</i></p>
 <p align="center"><i>Generate fake person.</i></p>
 <p align="center"><i>Generate passwords and etc.</i></p>
 
