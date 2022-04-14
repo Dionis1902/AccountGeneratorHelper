@@ -4,3 +4,4 @@ idna==3.3
 requests==2.27.1
 urllib3==1.26.9
 beautifulsoup4~=4.10.0
+pysocks==1.7.1

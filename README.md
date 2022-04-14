@@ -3,7 +3,7 @@
     <img src="https://pepy.tech/badge/account-generator-helper/month" />
     <img src="https://img.shields.io/github/stars/DioniS1902/AccountGeneratorHelper" />
     <img src="https://img.shields.io/pypi/v/account-generator-helper" />
-    <img src="https://img.shields.io/badge/python-3.x-blue" />
+    <img src="https://img.shields.io/pypi/pyversions/account-generator-helper" />
 </p>
 
 # <p align="center">AccountGeneratorHelper
@@ -16,13 +16,18 @@
 
 # Supported services
 ### Services for temporary mail
-- [x] [Inbox Kitten](https://inboxkitten.com/)
-- [x] [TempMail +](https://tempmail.plus/)
-- [x] [GmailNator](https://www.gmailnator.com/) *(Temp gmail email)*
+- ✅ [Inbox Kitten](https://inboxkitten.com/)
+- ✅ [TempMail +](https://tempmail.plus/)
+- ✅ [GmailNator](https://www.gmailnator.com/) *(Temp gmail email)*
 ### Services for receiving SMS
-- [x] [Receive Sms Free](https://receive-sms-free.cc/)
+- ✅ [Receive Sms Free](https://receive-sms-free.cc/)
 ### Services for fake data
-- [x] [TextReverse](https://www.textreverse.com/frontend/fakeAddressGenerator)
+- ✅ [TextReverse](https://www.textreverse.com/frontend/fakeAddressGenerator)
+### Services for proxy list
+- ✅ [PROXY-LIST](https://www.proxy-list.download/)
+- ✅ [SSL Proxy](https://www.sslproxies.org/)
+- ✅ [Socks Proxy](https://www.socks-proxy.net/)
+- ✅ [Hidemy.name](https://hidemy.name/)
 
 ## Getting started
 This library tested with Python 3.6-3.10 and Pypy 3. There are two ways to install the library:
@@ -85,15 +90,14 @@ def test_handler(letter):
 
 mail.poling()
 ```
+
 ```python
 # TempMail +
 from account_generator_helper import TempMailPlus
-from account_generator_helper.temp_mail.tempmailplus import Domains
-
+from account_generator_helper.temp_mail.tempmailplus import TempMailPlusDomains
 
 mail = TempMailPlus()
-print('Mail :', mail.set_email('test-mail', Domains.MAILTO_PLUS))  # Mail : test-mail@mailto.plus
-
+print('Mail :', mail.set_email('test-mail', TempMailPlusDomains.MAILTO_PLUS))  # Mail : test-mail@mailto.plus
 
 for _letter in mail.get_inbox():
     print('Letter :', _letter)  # Letter : <Letter ...>
@@ -122,14 +126,14 @@ def test_handler(letter):
 
 mail.poling()
 ```
+
 ```python
 # GmailNator
 from account_generator_helper import GmailNator
-from account_generator_helper.temp_mail.gmailnator import Domains
+from account_generator_helper.temp_mail.gmailnator import GmailNatorDomains
 
 mail = GmailNator()
-print('Mail :', mail.set_email('test-mail', Domains.GMAILNATOR_COM))  # Mail : test-mail@gmailnator.com
-
+print('Mail :', mail.set_email('test-mail', GmailNatorDomains.GMAILNATOR_COM))  # Mail : test-mail@gmailnator.com
 
 for _letter in mail.get_inbox():
     print('Letter :', _letter)  # Letter : <Letter ..>
@@ -159,10 +163,11 @@ def test_handler(letter):
 mail.poling()
 ```
 ### Receive SMS
+
 ```python
 # Receive Sms Free
 from account_generator_helper import ReceiveSms
-from account_generator_helper.temp_phone.countries import Counties
+from account_generator_helper.countries import Counties
 
 phone = ReceiveSms()
 
@@ -195,4 +200,17 @@ print(get_password(special_symbols=False))  # vX12FgcJ7PYwA3tn
 print(get_password(upper_case=False))  # ](}kh()|9~t(":4$
 
 print(get_password(upper_case=False, numbers=False, special_symbols=False))  # mppimpgxchlznwmm
+```
+### Proxies
+```python
+from account_generator_helper import Proxies
+
+proxies = Proxies()
+proxies.parse_proxies()
+
+print(proxies)  # <Proxies proxies_count=11572>
+
+print(proxies.pop())  # <Proxy proxy_type=HTTP address=203.23.106.209 port=80 country=Counties.CYPRUS>
+
+print(proxies.pop().get())  # http://203.32.121.187:80
 ```

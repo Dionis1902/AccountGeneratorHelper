@@ -1,6 +1,6 @@
 import requests
 from .exceptions import ProblemWithGetPersonData
-from .counties import Counties
+from .personcounties import PersonCounties
 from ..utilities import camel_to_snake
 
 headers = {
@@ -39,7 +39,7 @@ class Person:
     def country(self):
         return self._country
 
-    def update_data(self, country: Counties = Counties.USA):
+    def update_data(self, country: PersonCounties = PersonCounties.USA):
         """
         Generate new person data.
 

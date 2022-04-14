@@ -1,7 +1,7 @@
 import enum
 
 
-class Domains(enum.Enum):
+class TempMailPlusDomains(enum.Enum):
     MAILTO_PLUS = 'mailto.plus'
     FEXPOST_COM = 'fexpost.com'
     FEXBOX_ORG = 'fexbox.org'

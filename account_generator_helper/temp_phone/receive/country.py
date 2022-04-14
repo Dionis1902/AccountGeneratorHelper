@@ -1,7 +1,6 @@
 import random
-
-from ..countries import Counties
 from .phone import Phone
+from account_generator_helper.countries import Counties
 
 
 class Country:
@@ -18,17 +17,17 @@ class Country:
         """
         return self._country
 
-    def get_numbers(self):
+    def get_numbers(self) -> list[Phone]:
         """
         :return: List of phone numbers.
         """
-        return []
+        pass
 
-    def __repr__(self):
-        return '<Country country={}>'.format(self._country.name)
-
-    def get_number(self):
+    def get_number(self) -> Phone:
         """
         :return: Random number.
         """
         return random.choice(self.get_numbers())
+
+    def __repr__(self):
+        return '<Country country={}>'.format(self._country.name)

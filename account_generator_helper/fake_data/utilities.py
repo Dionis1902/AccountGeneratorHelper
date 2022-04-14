@@ -2,7 +2,7 @@ import random
 import string
 
 
-def get_password(length: int = 16, upper_case=True, numbers=True, special_symbols=True):
+def get_password(length: int = 16, upper_case=True, numbers=True, special_symbols=True) -> str:
     """
     Function for generate passwords.
 

@@ -23,11 +23,11 @@ class Phone:
         """
         return self._number
 
-    def get_last_messages(self):
+    def get_last_messages(self) -> list[Message]:
         """
         :return: List of Message objects.
         """
-        return []
+        pass
 
     def __repr__(self):
         return '<Phone code={} number=+{} country={}>'.format(self._code, self._number, self._country.name)

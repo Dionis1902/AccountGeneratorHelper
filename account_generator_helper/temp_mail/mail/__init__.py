@@ -1,6 +1,7 @@
 import re
 import time
 from account_generator_helper.utilities import random_string
+from .letter import Letter
 
 
 class Mail:
@@ -15,7 +16,7 @@ class Mail:
         self._proxies = {'http': proxy, 'https': proxy} if proxy else None
         self._handlers = []
 
-    def get_email(self, *args, **kwargs):
+    def get_email(self, *args, **kwargs) -> str:
         """
         Generates a random address and returns it.
 
@@ -30,7 +31,7 @@ class Mail:
         self._email = mail
         return self._email
 
-    def get_inbox(self):
+    def get_inbox(self) -> list[Letter]:
         """
         Return all letters from inbox.
 
@@ -82,3 +83,6 @@ class Mail:
                         self._letter_handler(_letter)
         except KeyboardInterrupt:
             pass
+
+    def __repr__(self):
+        return '<{class_name} email={email}>'.format(class_name=self.__class__.__name__, email=self._email)

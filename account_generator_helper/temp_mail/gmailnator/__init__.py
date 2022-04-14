@@ -2,7 +2,7 @@ import random
 import requests
 from ..exceptions import ProblemWithGetEmail
 from ..mail import Mail
-from .domains import Domains
+from .gmailnatordomains import GmailNatorDomains
 from account_generator_helper.utilities import random_string, quote
 from .letter import Letter
 
@@ -30,7 +30,7 @@ class GmailNator(Mail):
         return f'csrf_gmailnator_token={self.__get_csrf_gmail_nator_token()}&action={action}' + additional_data
 
     def get_email(self):
-        return self.set_email(random_string(), Domains[random.choice(Domains._member_names_)])
+        return self.set_email(random_string(), GmailNatorDomains[random.choice(GmailNatorDomains._member_names_)])
 
     def get_email_online(self, use_custom_domain=True, use_plus=True, use_point=True):
         """
@@ -48,7 +48,7 @@ class GmailNator(Mail):
             return self._set_email(r.json()['email'])
         raise ProblemWithGetEmail()
 
-    def set_email(self, email, domain: Domains = Domains.GMAILNATOR_COM):
+    def set_email(self, email, domain: GmailNatorDomains = GmailNatorDomains.GMAILNATOR_COM):
         return self._set_email(random.choice(domain.value).format(email))
 
     def get_inbox(self):

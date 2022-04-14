@@ -1,7 +1,7 @@
 import enum
 
 
-class Domains(enum.Enum):
+class GmailNatorDomains(enum.Enum):
     GMAILNATOR_COM = ['{}@gmailnator.com']
     PSNATOR_COM = ['{}@psnator.com']
     GMAIL_COM = ['claytmp+{}@gmail.com',

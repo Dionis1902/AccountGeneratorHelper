@@ -1,7 +1,7 @@
 import enum
 
 
-class Counties(enum.Enum):
+class PersonCounties(enum.Enum):
     USTRIA = 'at_AT'
     BELGIUM = 'fr_BE'
     CZECH_REPUBLIC = 'cz_CZ'

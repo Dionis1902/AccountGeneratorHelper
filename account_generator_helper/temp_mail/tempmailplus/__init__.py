@@ -3,7 +3,7 @@ import requests
 from .letter import Letter
 from ..exceptions import NotSetEmail
 from ..mail import Mail
-from .domains import Domains
+from .tempmailplusdomains import TempMailPlusDomains
 
 
 class TempMailPlus(Mail):
@@ -13,7 +13,7 @@ class TempMailPlus(Mail):
     def __init__(self, proxy=None):
         super().__init__(proxy)
 
-    def set_email(self, email, domain: Domains = None):
+    def set_email(self, email, domain: TempMailPlusDomains = None):
         """
         Use custom email address with custom domain.
 
@@ -23,7 +23,7 @@ class TempMailPlus(Mail):
         """
 
         if not domain:
-            domain = Domains[random.choice(Domains._member_names_)]
+            domain = TempMailPlusDomains[random.choice(TempMailPlusDomains._member_names_)]
         return super()._set_email(email + '@' + domain.value)
 
     def get_inbox(self):

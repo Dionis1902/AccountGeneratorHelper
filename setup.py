@@ -1,6 +1,5 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 from pathlib import Path
-
 
 this_directory = Path(__file__).parent
 
@@ -10,11 +9,7 @@ required = (this_directory / 'requirements.txt').read_text().splitlines()
 setup(
     name='account_generator_helper',
     version='1.0.3',
-    packages=['account_generator_helper', 'account_generator_helper.fake_data', 'account_generator_helper.temp_mail',
-              'account_generator_helper.temp_mail.mail', 'account_generator_helper.temp_mail.gmailnator',
-              'account_generator_helper.temp_mail.inboxkitten', 'account_generator_helper.temp_mail.tempmailplus',
-              'account_generator_helper.temp_phone', 'account_generator_helper.temp_phone.receive',
-              'account_generator_helper.temp_phone.receive_sms'],
+    packages=find_packages(),
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: MIT License',
@@ -33,7 +28,7 @@ setup(
         'Topic :: Utilities',
     ],
     project_urls={
-        'Source': 'https://github.com/Dionis1902/AccountGeneratorHelper',
+        'Source': 'https://github.com/Dionis1902/AccountGeneratorHelper/tree/main/account_generator_helper',
         'Examples': 'https://github.com/Dionis1902/AccountGeneratorHelper/tree/main/examples',
         'Tracker': 'https://github.com/Dionis1902/AccountGeneratorHelper/issues',
     },

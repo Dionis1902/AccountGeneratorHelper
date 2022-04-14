@@ -1,7 +1,7 @@
 import random
 import requests
 from .country import Country
-from ..countries import Counties
+from account_generator_helper.countries import Counties
 
 headers = {
   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36'
@@ -16,13 +16,13 @@ class Receive:
         self._s.headers.update(headers)
         self._countries = []
 
-    def get_counties(self):
+    def get_counties(self) -> list[Country]:
         """
         :return: List of counties.
         """
-        return []
+        pass
 
-    def get_country(self, country: Counties):
+    def get_country(self, country: Counties) -> Country:
         """
         Method returns object of the country, from this object you can get the phone number of this country.
 
@@ -31,8 +31,11 @@ class Receive:
         """
         return dict(enumerate(filter(lambda x: x.country == country, self.get_counties()))).get(0, None)
 
-    def get_random_country(self):
+    def get_random_country(self) -> Country:
         """
         :return: Random Country object.
         """
         return random.choice(self.get_counties())
+
+    def __repr__(self):
+        return '<Receive country_count={}>'.format(len(self._countries))
