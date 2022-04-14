@@ -73,8 +73,7 @@ class Proxies:
             __proxy = None
             with self.__lock:
                 __proxy = proxies.pop()
-            status = __proxy.is_valid()
-            if status:
+            if __proxy.is_valid():
                 with self.__lock:
                     good_proxies.append(__proxy)
 

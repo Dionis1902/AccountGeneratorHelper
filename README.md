@@ -14,7 +14,17 @@
 <p align="center"><i>Generate fake person.</i></p>
 <p align="center"><i>Generate passwords and etc.</i></p>
 
-# Supported services
+## Contents
+* [Supported services](#supported-services)
+* [Getting started](#getting-started)
+* [Usage](#usage)
+    * [Temp email services](#temp-email-services)
+    * [Receive SMS](#receive-sms)
+    * [Generate data](#generate-data)
+    * [Proxy parser](#proxy-parser)
+    * [Captcha solving](#captcha-solving)
+
+## Supported services
 ### Services for temporary mail
 - ✅ [Inbox Kitten](https://inboxkitten.com/)
 - ✅ [TempMail +](https://tempmail.plus/)
@@ -28,6 +38,8 @@
 - ✅ [SSL Proxy](https://www.sslproxies.org/)
 - ✅ [Socks Proxy](https://www.socks-proxy.net/)
 - ✅ [Hidemy.name](https://hidemy.name/)
+### Services for solving captcha
+- ✅ [Cloudmersive](https://cloudmersive.com/ocr-api)
 
 ## Getting started
 This library tested with Python 3.6-3.10 and Pypy 3. There are two ways to install the library:
@@ -52,7 +64,7 @@ It is generally recommended using the first option.
 $ pip install account-generator-helper --upgrade
 ```
 
-# Usage
+## Usage
 ### Temp email services
 ```python
 # Inbox Kitten
@@ -164,26 +176,29 @@ def test_handler(letter):
 
 mail.poling()
 ```
-### Receive SMS
 
+### Receive SMS
 ```python
 # Receive Sms Free
-from account_generator_helper import ReceiveSms
-from account_generator_helper.countries import Counties
+from account_generator_helper import ReceiveSms, Counties
+
 
 phone = ReceiveSms()
 
 country = phone.get_country(Counties.UKRAINE)
-phone = country.get_number()  # return random number from site
-print('Phone number :', phone.number)  # Phone number : 380...
+phone = country.get_number()
+print('Phone number :', phone.number)  # Phone number : 380665327743
 
 for message in phone.get_last_messages():
     print(message)  # <Message ...>
+
 ```
+
 ### Generate data
 ```python
 # Generate fake person
 from account_generator_helper import Person
+
 
 for _ in range(10):
     print(Person())  # <Person ...>
@@ -203,8 +218,25 @@ print(get_password(upper_case=False))  # ](}kh()|9~t(":4$
 
 print(get_password(upper_case=False, numbers=False, special_symbols=False))  # mppimpgxchlznwmm
 ```
-### Proxies
+
+### Proxy parser
 ```python
+# Proxy parsing
+from account_generator_helper import Proxies
+
+proxies = Proxies()
+proxies.parse_proxies()
+
+print(proxies)  # <Proxies proxies_count=11572>
+
+print(proxies.pop())  # <Proxy proxy_type=HTTP address=203.23.106.209 port=80 country=Counties.CYPRUS>
+
+print(proxies.pop().get())  # http://203.32.121.187:80
+```
+
+### Captcha solving
+```python
+# Solving regular text captcha
 from account_generator_helper import Proxies
 
 proxies = Proxies()

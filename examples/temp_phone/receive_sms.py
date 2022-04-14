@@ -1,5 +1,5 @@
-from account_generator_helper import ReceiveSms
-from account_generator_helper.countries import Counties
+from account_generator_helper import ReceiveSms, Counties
+
 
 phone = ReceiveSms()
 

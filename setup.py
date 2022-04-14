@@ -8,7 +8,7 @@ required = (this_directory / 'requirements.txt').read_text().splitlines()
 
 setup(
     name='account_generator_helper',
-    version='1.0.4',
+    version='1.0.5',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -26,6 +26,7 @@ setup(
         'Programming Language :: Python :: 3.10',
         'Topic :: Communications :: Email',
         'Topic :: Utilities',
+        'Topic :: Internet :: Proxy Servers',
     ],
     project_urls={
         'Source': 'https://github.com/Dionis1902/AccountGeneratorHelper/tree/main/account_generator_helper',
@@ -40,6 +41,6 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     python_requires='>=3',
-    keywords='python helper mail email proxy pypi sms gmail fake python3 temp-mail fake-data account-generator fake-data-generator free-proxy recive-sms gmailnator gmailnator-api temp-mail-api poxies',
+    keywords='python email captcha proxy pypi sms gmail temp-mail captcha-solving captcha-solver fake-data account-generator captcha-recognition fake-data-generator free-proxy recive-sms gmailnator gmailnator-api poxies',
     install_requires=required
 )
