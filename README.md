@@ -93,11 +93,12 @@ mail.poling()
 
 ```python
 # TempMail +
-from account_generator_helper import TempMailPlus
-from account_generator_helper.temp_mail.tempmailplus import TempMailPlusDomains
+from account_generator_helper import TempMailPlus, TempMailPlusDomains
+
 
 mail = TempMailPlus()
 print('Mail :', mail.set_email('test-mail', TempMailPlusDomains.MAILTO_PLUS))  # Mail : test-mail@mailto.plus
+
 
 for _letter in mail.get_inbox():
     print('Letter :', _letter)  # Letter : <Letter ...>
@@ -129,11 +130,12 @@ mail.poling()
 
 ```python
 # GmailNator
-from account_generator_helper import GmailNator
-from account_generator_helper.temp_mail.gmailnator import GmailNatorDomains
+from account_generator_helper import GmailNator, GmailNatorDomains
+
 
 mail = GmailNator()
 print('Mail :', mail.set_email('test-mail', GmailNatorDomains.GMAILNATOR_COM))  # Mail : test-mail@gmailnator.com
+
 
 for _letter in mail.get_inbox():
     print('Letter :', _letter)  # Letter : <Letter ..>

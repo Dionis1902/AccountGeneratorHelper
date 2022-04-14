@@ -8,7 +8,7 @@ required = (this_directory / 'requirements.txt').read_text().splitlines()
 
 setup(
     name='account_generator_helper',
-    version='1.0.3',
+    version='1.0.4',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -40,6 +40,6 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     python_requires='>=3',
-    keywords='helper pypi gmail python3 temp-mail fake-data account-generator fake-data-generator recive-sms gmailnator gmailnator-api temp-mail-api',
+    keywords='python helper mail email proxy pypi sms gmail fake python3 temp-mail fake-data account-generator fake-data-generator free-proxy recive-sms gmailnator gmailnator-api temp-mail-api poxies',
     install_requires=required
 )

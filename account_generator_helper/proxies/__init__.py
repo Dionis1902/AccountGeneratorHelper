@@ -13,7 +13,7 @@ class Proxies:
     def __init__(self):
         self.__proxies: list[Proxy] = []
 
-    def _proxy_list(self):
+    def _proxy_list(self, _):
         for proxy_type in ProxyType:
             r = requests.get(f'https://www.proxy-list.download/api/v1/get?type={proxy_type.value}')
             if not r.ok:
@@ -22,7 +22,7 @@ class Proxies:
                 with self.__lock:
                     self.__proxies.append(Proxy(proxy_type, *row.split(':'), None))
 
-    def _ssl_proxies(self):
+    def _ssl_proxies(self, _):
         for proxy_type, url in zip([ProxyType.HTTPS, ProxyType.SOCKS4], ['https://www.sslproxies.org/', 'https://www.socks-proxy.net/']):
             resp = requests.get(url)
             for row in self._re_proxy(resp.text):
@@ -34,7 +34,7 @@ class Proxies:
                 with self.__lock:
                     self.__proxies.append(Proxy(proxy_type, address, port, country))
 
-    def _hide_me(self):
+    def _hide_me(self, max_page):
         i = 0
         while True:
             r = requests.get(f'https://hidemy.name/ua/proxy-list/?start={i * 64}#list', headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36'})
@@ -54,6 +54,8 @@ class Proxies:
                     self.__proxies.append(Proxy(getattr(ProxyType, proxy_type.text.split(',')[0].upper()),
                                                 address.text, port.text, country))
             if page.find('div', {'class': 'pagination'}).find_all('a')[-1].text.isdigit():
+                break
+            if max_page and max_page == i:
                 break
             i += 1
 
@@ -76,12 +78,14 @@ class Proxies:
                 with self.__lock:
                     good_proxies.append(__proxy)
 
-    def parse_proxies(self):
+    def parse_proxies(self, max_page=0):
         """
         Method for parsing all proxies from all services.
+
+        :param max_page: Maximum number of pages from which you need to parse the proxy, 0 if you need to parse all.
         """
         parsers = [self._proxy_list, self._ssl_proxies, self._hide_me]
-        threads = [Thread(target=parser, daemon=True) for parser in parsers]
+        threads = [Thread(target=parser, args=(max_page, ), daemon=True) for parser in parsers]
         [thread.start() for thread in threads]
         [thread.join() for thread in threads]
 
