@@ -239,14 +239,14 @@ print(proxies.pop().get())  # http://203.32.121.187:80
 ### Captcha solving
 ```python
 # Solving regular text captcha
-from account_generator_helper import Proxies
+from account_generator_helper import CaptchaSolver
 
-proxies = Proxies()
-proxies.parse_proxies()
 
-print(proxies)  # <Proxies proxies_count=11572>
+captcha_solver = CaptchaSolver()
 
-print(proxies.pop())  # <Proxy proxy_type=HTTP address=203.23.106.209 port=80 country=Counties.CYPRUS>
+print('Captcha 1 result :', captcha_solver.solve(open('images/captcha_1.png', 'rb')))  # 97823C
 
-print(proxies.pop().get())  # http://203.32.121.187:80
+print('Captcha 2 result :', captcha_solver.solve(open('images/captcha_2.png', 'rb')))  # 8CCPXP
+
+print('Captcha 3 result :', captcha_solver.solve(open('images/captcha_3.png', 'rb')))  # NRGFHG
 ```
