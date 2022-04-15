@@ -66,10 +66,10 @@ class Proxy:
         return hash(self.strfproxy())
 
     def __eq__(self, other):
-        return self.__hash__ == hash(other)
+        return self.__str__() == str(other)
 
     def __ne__(self, other):
-        return self.__hash__ != hash(other)
+        return self.__str__() != str(other)
 
     def __str__(self):
         return self.strfproxy()
