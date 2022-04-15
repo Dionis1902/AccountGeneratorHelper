@@ -14,12 +14,12 @@ class ReceiveSms(Receive):
             return self._countries
 
         def __parse(page_number):
-            r = self._s.get(f'https://receive-sms-free.cc/regions/{page_number}.html')
+            r = self._s.strfproxy(f'https://receive-sms-free.cc/regions/{page_number}.html')
             if r.status_code != 200:
                 raise ProblemWithFetchNumbers()
             page = BeautifulSoup(r.text, 'html.parser')
             try:
-                _is_need_break = not page.find('ul', {'class': 'pagination'}).find_all('li')[-1].find('a').get('href', False)
+                _is_need_break = not page.find('ul', {'class': 'pagination'}).find_all('li')[-1].find('a').strfproxy('href', False)
             except AttributeError:
                 _is_need_break = True
 

@@ -26,7 +26,7 @@ class Proxy:
     def country(self):
         return self._country
 
-    def get(self, str_format='{proxy_type}://{address}:{port}') -> str:
+    def strfproxy(self, str_format='{proxy_type}://{address}:{port}') -> str:
         """
         Return formatted proxy string.
         {proxy_type} - Proxy type
@@ -46,12 +46,12 @@ class Proxy:
         :return: bool
         """
         try:
-            r = requests.get("http://ip-api.com/json?fields=countryCode", proxies={'http': self.get(), 'https': self.get()}, timeout=timeout)
+            r = requests.get("http://ip-api.com/json?fields=countryCode", proxies={'http': self.strfproxy(), 'https': self.strfproxy()}, timeout=timeout)
             try:
                 self._country = Counties(r.json()['countryCode'])
             except JSONDecodeError:
                 return False
-            except ValueError:
+            except (ValueError, KeyError):
                 self._country = None
         except IOError:
             return False
@@ -61,3 +61,15 @@ class Proxy:
         return '<Proxy proxy_type={proxy_type} address={address} port={port} country={country}>'.format(
             proxy_type=self.proxy_type.name, address=self._address, port=self._port,
             country=self._country)
+
+    def __hash__(self):
+        return hash(self.strfproxy())
+
+    def __eq__(self, other):
+        return self.__hash__ == hash(other)
+
+    def __ne__(self, other):
+        return self.__hash__ != hash(other)
+
+    def __str__(self):
+        return self.strfproxy()

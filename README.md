@@ -37,12 +37,18 @@
 ### Services for fake data
 - ✅ [TextReverse](https://www.textreverse.com/frontend/fakeAddressGenerator)
 ### Services for proxy list
-- ✅ [PROXY-LIST](https://www.proxy-list.download/)
-- ✅ [SSL Proxy](https://www.sslproxies.org/)
+- ✅ [Proxy List](https://www.proxy-list.download/)
+- ✅ [SSL Proxies](https://www.sslproxies.org/)
 - ✅ [Socks Proxy](https://www.socks-proxy.net/)
-- ✅ [Hidemy.name](https://hidemy.name/)
+- ✅ [Free Proxy List](https://free-proxy-list.net/)
+- ✅ [ProxyScrape](https://proxyscrape.com/free-proxy-list)
+- ✅ [HideMy.name](https://hidemy.name/)
+- ✅ [Advanced](https://advanced.name/freeproxy)
+- ✅ [OpenProxy](https://openproxy.space/list)
+- ✅ [GeoNode](https://geonode.com/free-proxy-list/)
+- ✅ [OpenProxy](https://openproxy.space/list)
 ### Services for solving captcha
-- ✅ [Cloudmersive](https://cloudmersive.com/ocr-api)
+- ✅ [CloudMersive](https://cloudmersive.com/ocr-api)
 
 ## Getting started
 This library tested with Python 3.6-3.10 and Pypy 3. There are two ways to install the library:
@@ -223,6 +229,7 @@ print(get_password(upper_case=False, numbers=False, special_symbols=False))  # m
 ```
 
 ### Proxy parser
+
 ```python
 # Proxy parsing
 from account_generator_helper import Proxies
@@ -234,7 +241,7 @@ print(proxies)  # <Proxies proxies_count=11572>
 
 print(proxies.pop())  # <Proxy proxy_type=HTTP address=203.23.106.209 port=80 country=Counties.CYPRUS>
 
-print(proxies.pop().get())  # http://203.32.121.187:80
+print(proxies.pop().strfproxy())  # http://203.32.121.187:80
 ```
 
 ### Captcha solving
@@ -257,6 +264,6 @@ print('Captcha 3 result :', captcha_solver.solve(open('images/captcha_3.png', 'r
 - hCaptcha solver
 - FunCaptcha solver
 - Better text captcha solver
-- Add more proxy, emails and receiving SMS services
+- Add more emails and receiving SMS services
 - Better fake person generator, with more data (credit card, bio, photo etc)
 - Simple account generator (Steam, Outlook etc)
