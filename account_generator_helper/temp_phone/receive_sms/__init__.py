@@ -3,6 +3,7 @@ from ..receive import Receive
 from bs4 import BeautifulSoup
 from ..exceptions import ProblemWithFetchNumbers
 from .country import Country
+from ...countries import Counties
 
 
 class ReceiveSms(Receive):
@@ -11,15 +12,15 @@ class ReceiveSms(Receive):
 
     def get_counties(self):
         if self._countries:
-            return self._countries
+            return list(self._countries.items())
 
         def __parse(page_number):
-            r = self._s.strfproxy(f'https://receive-sms-free.cc/regions/{page_number}.html')
+            r = self._s.get(f'https://receive-sms-free.cc/regions/{page_number}.html')
             if r.status_code != 200:
                 raise ProblemWithFetchNumbers()
             page = BeautifulSoup(r.text, 'html.parser')
             try:
-                _is_need_break = not page.find('ul', {'class': 'pagination'}).find_all('li')[-1].find('a').strfproxy('href', False)
+                _is_need_break = not page.find('ul', {'class': 'pagination'}).find_all('li')[-1].find('a').get('href', False)
             except AttributeError:
                 _is_need_break = True
 
@@ -30,7 +31,7 @@ class ReceiveSms(Receive):
         while True:
             i += 1
             data, is_need_break = __parse(i)
-            self._countries += [Country(self._s, *_country) for _country in data]
+            self._countries = {**self._countries, **{Counties(_country[0]): Country(self._s, *_country) for _country in data}}
             if is_need_break:
                 break
-        return self._countries
+        return list(self._countries.items())

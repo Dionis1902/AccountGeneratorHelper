@@ -10,7 +10,7 @@ class Phone(phone.Phone):
 
     def get_last_messages(self):
         data = []
-        r = self._s.strfproxy(self._url)
+        r = self._s.get(self._url)
         if r.status_code != 200:
             raise ProblemWithFetchNumbers()
 

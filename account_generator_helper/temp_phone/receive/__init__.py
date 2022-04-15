@@ -14,7 +14,7 @@ class Receive:
         if proxy:
             self._s.proxies.update({'http': proxy, 'https': proxy})
         self._s.headers.update(headers)
-        self._countries = []
+        self._countries = dict()
 
     def get_counties(self) -> list[Country]:
         """
@@ -29,7 +29,9 @@ class Receive:
         :param country: Country.
         :return: Country object.
         """
-        return dict(enumerate(filter(lambda x: x.country == country, self.get_counties()))).get(0, None)
+        if not self._countries:
+            self.get_counties()
+        return self._countries.get(country, None)
 
     def get_random_country(self) -> Country:
         """
