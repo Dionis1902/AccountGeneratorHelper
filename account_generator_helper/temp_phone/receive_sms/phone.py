@@ -12,7 +12,7 @@ class Phone(phone.Phone):
         data = []
         r = self._s.get(self._url)
         if r.status_code != 200:
-            raise ProblemWithFetchNumbers()
+            raise ProblemWithFetchMessages()
 
         page = BeautifulSoup(r.text, 'html.parser')
         table = page.find('div', {'class': 'casetext'})

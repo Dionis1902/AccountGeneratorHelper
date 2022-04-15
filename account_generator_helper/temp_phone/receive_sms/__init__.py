@@ -17,7 +17,7 @@ class ReceiveSms(Receive):
         def __parse(page_number):
             r = self._s.get(f'https://receive-sms-free.cc/regions/{page_number}.html')
             if r.status_code != 200:
-                raise ProblemWithFetchNumbers()
+                raise ProblemWithCounties()
             page = BeautifulSoup(r.text, 'html.parser')
             try:
                 _is_need_break = not page.find('ul', {'class': 'pagination'}).find_all('li')[-1].find('a').get('href', False)
