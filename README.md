@@ -25,6 +25,7 @@
     * [Generate data](#generate-data)
     * [Proxy parser](#proxy-parser)
     * [Captcha solving](#captcha-solving)
+* [Coming soon](#coming-soon)
 
 ## Supported services
 ### Services for temporary mail
@@ -250,3 +251,12 @@ print('Captcha 2 result :', captcha_solver.solve(open('images/captcha_2.png', 'r
 
 print('Captcha 3 result :', captcha_solver.solve(open('images/captcha_3.png', 'rb')))  # NRGFHG
 ```
+
+## Coming soon
+- reCAPTCHA solver
+- hCaptcha solver
+- FunCaptcha solver
+- Better text captcha solver
+- Add more proxy, emails and receiving SMS services
+- Better fake person generator, with more data (credit card, bio, photo etc)
+- Simple account generator (Steam, Outlook etc)
