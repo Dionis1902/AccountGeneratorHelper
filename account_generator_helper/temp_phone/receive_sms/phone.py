@@ -16,7 +16,7 @@ class Phone(phone.Phone):
 
         page = BeautifulSoup(r.text, 'html.parser')
         table = page.find('div', {'class': 'casetext'})
-        for e in table.find_all('div', {'class': 'row border-bottom table-hover'}):
+        for e in table.find_all('div', {'class': 'row'})[1:]:
             try:
                 data.append(Message(e.find('div', {'class': 'col-xs-12 col-md-2'}).find('div').text,
                                     e.find('div', {'class': 'col-xs-12 col-md-8'}).text,
