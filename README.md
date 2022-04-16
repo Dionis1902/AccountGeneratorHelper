@@ -58,13 +58,13 @@ $ pip install account-generator-helper
 ```
 - Installation from source (requires git):
 ```
-$ git clone https://github.com/DioniS1902/AccountGeneratorHelper.git
+$ git clone https://github.com/Dionis1902/AccountGeneratorHelper.git
 $ cd AccountGeneratorHelper
 $ python setup.py install
 ```
 or:
 ```
-$ pip install git+https://github.com/DioniS1902/AccountGeneratorHelper.git
+$ pip install git+https://github.com/Dionis1902/AccountGeneratorHelper.git
 ```
 It is generally recommended using the first option.
 
