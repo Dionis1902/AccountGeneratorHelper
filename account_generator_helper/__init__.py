@@ -5,7 +5,7 @@ from .fake_data.personcounties import PersonCounties
 from .fake_data.utilities import get_password
 from .proxies import Proxies, ProxyType
 from .countries import Counties
-from .captcha_solver import CaptchaSolver
+from .captcha_solver import *
 
 
 __author__ = 'Dionis1902'

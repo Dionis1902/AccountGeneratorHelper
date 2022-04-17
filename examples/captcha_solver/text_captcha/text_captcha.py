@@ -1,7 +1,7 @@
-from account_generator_helper import CaptchaSolver
+from account_generator_helper import TextCaptchaSolver
 
 
-captcha_solver = CaptchaSolver()
+captcha_solver = TextCaptchaSolver()
 
 print('Captcha 1 result :', captcha_solver.solve(open('images/captcha_1.png', 'rb')))  # 97823C
 
