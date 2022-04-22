@@ -8,7 +8,7 @@ required = (this_directory / 'requirements.txt').read_text().splitlines()
 
 setup(
     name='account_generator_helper',
-    version='1.0.7',
+    version='1.0.8',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 3 - Alpha',
