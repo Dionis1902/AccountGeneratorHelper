@@ -2,6 +2,7 @@ import re
 import time
 from account_generator_helper.utilities import random_string
 from .letter import Letter
+from typing import List
 
 
 class Mail:
@@ -31,7 +32,7 @@ class Mail:
         self._email = mail
         return self._email
 
-    def get_inbox(self) -> list[Letter]:
+    def get_inbox(self) -> List[Letter]:
         """
         Return all letters from inbox.
 

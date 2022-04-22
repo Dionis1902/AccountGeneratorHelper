@@ -8,6 +8,7 @@ from threading import Thread, Lock
 from bs4 import BeautifulSoup
 import logging
 import base64
+from typing import List
 
 
 class Proxies:
@@ -158,7 +159,7 @@ class Proxies:
         return re.findall(r'<td>([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})</td><td>([0-9]{2,5})</td><td>(\D{2})</td>', string)
 
     @property
-    def proxies(self) -> list[Proxy]:
+    def proxies(self) -> List[Proxy]:
         return list(self.__proxies)
 
     def __worker(self, proxies, good_proxies, info):

@@ -1,4 +1,5 @@
 from ..message import Message
+from typing import List
 
 
 class Phone:
@@ -23,7 +24,7 @@ class Phone:
         """
         return self._number
 
-    def get_last_messages(self) -> list[Message]:
+    def get_last_messages(self) -> List[Message]:
         """
         :return: List of Message objects.
         """

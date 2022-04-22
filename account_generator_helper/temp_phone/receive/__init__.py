@@ -2,6 +2,8 @@ import random
 import requests
 from .country import Country
 from account_generator_helper.countries import Counties
+from typing import List
+
 
 headers = {
   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36'
@@ -16,7 +18,7 @@ class Receive:
         self._s.headers.update(headers)
         self._countries = dict()
 
-    def get_counties(self) -> list[Country]:
+    def get_counties(self) -> List[Country]:
         """
         :return: List of counties.
         """
