@@ -1,21 +1,29 @@
+import json
 import re
-import requests
 from ..mail import letter
 from datetime import datetime
-from account_generator_helper.utilities import unescape
+
+header_regex = r'<div id="subject-header"><b>From: <\/b>.*<br\/><b>Subject: <\/b>[^<]*<\/b><div><b>Time: <\/b>[^<]*<hr\s*\/><\/div><\/div>'
+headers = {
+    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    'content-type': 'application/json'
+}
 
 
 class Letter(letter.Letter):
-    def __init__(self, to, content, proxies):
-        letter_id, _from, subject = re.findall(r'.*href="(https://www.gmailnator.com/inbox/.*)">.*<table.*<td.*>(.* <.*>)</td>.*<td.*>(.*)</td>.*<td.*>.*</td>.*', content.replace('\n', ''))[0]
-        super().__init__(to, *re.findall(r'(.*) <(.*)>', _from)[0], subject, datetime.fromtimestamp(0), proxies)
-        self._letter_id = letter_id
+    def __init__(self, to, content, proxies, token, session):
+        self._token = token
+        self._s = session
+        letter_id, _from, subject = content['messageID'], content['from'], content['subject']
+        super().__init__(to, *re.findall(r'(.*) <(.*)>', _from)[0], subject, datetime.fromtimestamp(0), proxies, letter_id)
 
     @property
     def letter(self):
         if self._letter:
             return self._letter
-        r = requests.get(self._letter_id, proxies=self._proxies)
+        payload = json.dumps({'email': self._email, 'messageID': self._letter_id})
+        r = self._s.post('https://www.emailnator.com/message-list', proxies=self._proxies, data=payload,
+                         headers={**headers, 'x-xsrf-token': self._token})
         if r.status_code == 200:
-            self._letter = unescape(r.text.split('iframe srcdoc="')[1].split('" id="message-body"')[0])
+            self._letter = re.sub(header_regex, '', r.text)
             return self._letter

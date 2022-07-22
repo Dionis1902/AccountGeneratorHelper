@@ -1,3 +1,3 @@
 from .inboxkitten import InboxKitten
 from .tempmailplus import TempMailPlus, TempMailPlusDomains
-from .gmailnator import GmailNator, GmailNatorDomains
+from .gmailnator import GmailNator

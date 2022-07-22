@@ -1,9 +1,8 @@
-from account_generator_helper import GmailNator, GmailNatorDomains
+from account_generator_helper import GmailNator
 
 
 mail = GmailNator()
-print('Mail :', mail.set_email('test-mail', GmailNatorDomains.GMAILNATOR_COM))  # Mail : test-mail@gmailnator.com
-
+print('Mail :', mail.set_email('jo.n.a.thanm.icha.eltmp@gmail.com'))  # Mail : jo.n.a.thanm.icha.eltmp@gmail.com
 
 for _letter in mail.get_inbox():
     print('Letter :', _letter)  # Letter : <Letter ..>

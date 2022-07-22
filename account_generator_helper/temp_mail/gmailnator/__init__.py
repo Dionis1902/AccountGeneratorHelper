@@ -1,36 +1,35 @@
+import json
 import random
 import requests
 from ..exceptions import ProblemWithGetEmail
 from ..mail import Mail
-from .gmailnatordomains import GmailNatorDomains
-from account_generator_helper.utilities import random_string, quote
+from account_generator_helper.utilities import random_string
 from .letter import Letter
+from urllib.parse import unquote
 
 headers = {
-  'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    'content-type': 'application/json'
 }
 
 
 class GmailNator(Mail):
     """
-    Class for work with https://www.gmailnator.com/
+    Class for work with https://www.emailnator.com/
     """
+
     def __init__(self, proxy=None):
         super().__init__(proxy)
         self.__s = requests.Session()
         if proxy:
             self.__s.proxies.update(self._proxies)
-        self.__s.get('https://www.gmailnator.com/')
+        self.__s.get('https://www.emailnator.com/')
 
-    def __get_csrf_gmail_nator_token(self):
-        return self.__s.cookies.get('csrf_gmailnator_cookie')
-
-    def __get_payload(self, action, additional_data=''):
-
-        return f'csrf_gmailnator_token={self.__get_csrf_gmail_nator_token()}&action={action}' + additional_data
+    def __get_xsrf_token(self):
+        return unquote(self.__s.cookies.get('XSRF-TOKEN'))
 
     def get_email(self):
-        return self.set_email(random_string(), GmailNatorDomains[random.choice(GmailNatorDomains._member_names_)])
+        return self.set_email(self.get_email_online())
 
     def get_email_online(self, use_custom_domain=True, use_plus=True, use_point=True):
         """
@@ -41,19 +40,25 @@ class GmailNator(Mail):
         :param use_point:  Generate email with "." in address.
         :return: Random email address.
         """
-
-        payload = '&'.join(['', *[f"data[]={i+1}" for i, data in enumerate(list(locals().values())[1:]) if data]])
-        r = self.__s.post('https://www.gmailnator.com/index/indexquery', headers=headers, data=self.__get_payload('GenerateEmail', payload))
+        data = ['domain', 'plusGmail', 'dotGmail']
+        payload = json.dumps({'email': [i for i, k in zip(data, [use_custom_domain, use_plus, use_point]) if k]})
+        r = self.__s.post('https://www.emailnator.com/generate-email',
+                          headers={**headers, 'x-xsrf-token': self.__get_xsrf_token()}, data=payload)
         if r.status_code == 200:
-            return self._set_email(r.json()['email'])
+            return self._set_email(r.json()['email'][0])
         raise ProblemWithGetEmail()
 
-    def set_email(self, email, domain: GmailNatorDomains = GmailNatorDomains.GMAILNATOR_COM):
-        return self._set_email(random.choice(domain.value).format(email))
+    def set_email(self, email):
+        """
+        Make sure you use the email address associated with this site or it won't work
+        """
+        return self._set_email(email)
 
     def get_inbox(self):
-        payload = self.__get_payload('LoadMailList', f'&Email_address={quote(self._email)}')
-        r = self.__s.post('https://www.gmailnator.com/mailbox/mailboxquery', headers=headers, data=payload)
+        payload = json.dumps({'email': self._email})
+        r = self.__s.post('https://www.emailnator.com/message-list',
+                          headers={**headers, 'x-xsrf-token': self.__get_xsrf_token()}, data=payload)
         if r.status_code == 200:
-            return [Letter(self._email, _letter['content'], self._proxies) for _letter in r.json() if 'inbox' in _letter['content']]
+            return [Letter(self._email, _letter, self._proxies, self.__get_xsrf_token(), self.__s) for _letter in r.json()['messageData'] if
+                    'ADS' not in _letter['messageID']]
         return []
