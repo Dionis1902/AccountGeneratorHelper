@@ -26,6 +26,7 @@
     * [Proxy parser](#proxy-parser)
     * [Captcha solving](#captcha-solving)
 * [Coming soon](#coming-soon)
+* [Say thank you me](#say-thank-you-me)
 
 ## Supported services
 ### Services for temporary mail
@@ -267,3 +268,15 @@ print('Captcha 3 result :', captcha_solver.solve(open('images/captcha_3.png', 'r
 - Add more emails and receiving SMS services
 - Better fake person generator, with more data (credit card, bio, photo etc)
 - Simple account generator (Steam, Outlook etc)
+
+## Say thank you me
+<p align="center">
+    <a href="https://www.buymeacoffee.com/Dionis1902"><img src="https://i.imgur.com/zE8Y8Dp.png"></a>
+</p>
+
+<p align="center">USDT (ERC20) : 0xB8314551f0633aee73f93Ff4389629B367e59189</p>
+<p align="center">USDT (TRC20) : TYJmX4R22NmSMBu7HWbwuwRr7TW9jN5az9</p>
+<p align="center">BTC : bc1q3jgp25rc8qtzx0fwd9ltpy45yv05hphu7pvwla</p>
+<p align="center">ETH : 0xB8314551f0633aee73f93Ff4389629B367e59189</p>
+<p align="center">BNB (Smart Chain) : 0xB8314551f0633aee73f93Ff4389629B367e59189</p>
+
