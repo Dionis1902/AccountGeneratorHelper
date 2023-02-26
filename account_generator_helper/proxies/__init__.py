@@ -38,11 +38,10 @@ class Proxies:
             proxies = r.text.split()
             self.__logger.debug(
                 '{} parsed {} {} proxy'.format(url.split('/api/')[0].split('/v')[0], len(proxies), proxy_type.name))
-            result_proxies = set()
-            for row in proxies:
-                result_proxies.add(Proxy(proxy_type, *row.split(':'), None))
+            result_proxies = {Proxy(proxy_type, *row.split(':'), None) for row in proxies}
+
             with self.__lock:
-                self.__proxies.union(result_proxies)
+                self.__proxies = self.__proxies.union(result_proxies)
 
     def _ssl_proxies(self, _):
         for proxy_type, url in zip([ProxyType.HTTP, ProxyType.HTTPS, ProxyType.SOCKS4],
@@ -62,10 +61,9 @@ class Proxies:
                     country = Counties(country.upper())
                 except ValueError:
                     country = None
-
                 result_proxies.add(Proxy(proxy_type, address, port, country))
             with self.__lock:
-                self.__proxies.union(result_proxies)
+                self.__proxies = self.__proxies.union(result_proxies)
 
     def _geo_node(self, _):
         try:
@@ -78,15 +76,15 @@ class Proxies:
             return
         data = r.json().get('data', [])
         self.__logger.debug('https://geonode.com parsed {} proxy'.format(len(data)))
+        result_proxies = set()
         for row in data:
             try:
                 country = Counties(row['country'])
             except ValueError:
                 country = None
-
-            with self.__lock:
-                self.__proxies.add(Proxy(ProxyType(row['protocols'][0] if row['protocols'][0] != 'https' else 'http'),
-                                         row['ip'], row['port'], country))
+            result_proxies.add(Proxy(ProxyType(row['protocols'][0] if row['protocols'][0] != 'https' else 'http'), row['ip'], row['port'], country))
+        with self.__lock:
+            self.__proxies = self.__proxies.union(result_proxies)
 
     def _advanced(self, max_page):
         i = 1
@@ -104,20 +102,20 @@ class Proxies:
             if not table:
                 continue
             proxies_rows = table.find_all('tr')
+            result_proxies = set()
             for row in proxies_rows:
                 _, address, port, proxy_type, country, _, _ = row.find_all('td')
                 try:
                     country = Counties(country.find('a').text)
                 except (AttributeError, ValueError):
                     country = None
-
-                with self.__lock:
-                    try:
-                        self.__proxies.add(Proxy(getattr(ProxyType, proxy_type.find('a').text.upper()),
-                                                 base64.b64decode(address['data-ip']).decode(),
-                                                 base64.b64decode(port['data-port']).decode(), country))
-                    except AttributeError:
-                        pass
+                try:
+                    result_proxies.add(Proxy(getattr(ProxyType, proxy_type.find('a').text.upper()),
+                                             base64.b64decode(address['data-ip']).decode(), base64.b64decode(port['data-port']).decode(), country))
+                except AttributeError:
+                    pass
+            with self.__lock:
+                self.__proxies = self.__proxies.union(result_proxies)
             self.__logger.debug('https://advanced.name page {} parsed {} proxy'.format(i + 1, len(proxies_rows)))
             if page.find('ul', {'class': 'pagination pagination-lg'}).find_all('a')[-2].text == str(i):
                 break
@@ -150,10 +148,37 @@ class Proxies:
                     country = Counties(main_data['code'])
                 except (AttributeError, ValueError):
                     country = None
+                result_proxies = {Proxy(proxy_type, *item.split(':'), country) for item in main_data.get('items', [])}
 
-                for item in main_data.get('items', []):
-                    with self.__lock:
-                        self.__proxies.add(Proxy(proxy_type, *item.split(':'), country))
+                with self.__lock:
+                    self.__proxies = self.__proxies.union(result_proxies)
+
+    def _get_github(self, _):
+        urls = [
+            ('https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks5.txt', ProxyType.SOCKS5),
+            ('https://raw.githubusercontent.com/hookzof/socks5_list/master/proxy.txt', ProxyType.SOCKS5),
+            ('https://raw.githubusercontent.com/prxchk/proxy-list/main/socks5.txt', ProxyType.SOCKS5),
+            ('https://raw.githubusercontent.com/HyperBeats/proxy-list/main/socks5.txt', ProxyType.SOCKS5),
+            ('https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks4.txt', ProxyType.SOCKS4),
+            ('https://raw.githubusercontent.com/prxchk/proxy-list/main/socks4.txt', ProxyType.SOCKS4),
+            ('https://raw.githubusercontent.com/HyperBeats/proxy-list/main/socks4.txt', ProxyType.SOCKS4),
+            ('https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt', ProxyType.HTTP),
+            ('https://raw.githubusercontent.com/prxchk/proxy-list/main/http.txt', ProxyType.HTTP),
+            ('https://raw.githubusercontent.com/HyperBeats/proxy-list/main/http.txt', ProxyType.HTTP),
+            ('https://raw.githubusercontent.com/HyperBeats/proxy-list/main/https.txt', ProxyType.HTTPS)
+        ]
+        for url, proxy_type in urls:
+            try:
+                r = requests.get(url, timeout=10)
+            except requests.exceptions.ReadTimeout:
+                return
+            if not r.ok:
+                continue
+            proxies = r.text.split('\n')
+            self.__logger.debug('{} parsed {} {} proxy'.format(url, len(proxies), proxy_type.name))
+            result_proxies = {Proxy(proxy_type, *item.strip().split(':'), None) for item in proxies if item.strip()}
+            with self.__lock:
+                self.__proxies = self.__proxies.union(result_proxies)
 
     @staticmethod
     def _re_proxy(string):
@@ -186,7 +211,7 @@ class Proxies:
         :param max_page: Maximum number of pages from which you need to parse the proxy, 0 if you need to parse all.
         """
         self.__logger.debug('Start parsing proxy')
-        parsers = [self._proxy_list, self._ssl_proxies, self._geo_node, self._advanced, self._open_proxy]
+        parsers = [self._proxy_list, self._ssl_proxies, self._geo_node, self._advanced, self._open_proxy, self._get_github]
         threads = [Thread(target=parser, args=(max_page,), daemon=True) for parser in parsers]
         [thread.start() for thread in threads]
         [thread.join() for thread in threads]

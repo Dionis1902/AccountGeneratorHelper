@@ -8,3 +8,11 @@ class ProblemWithFetchMessages(Exception):
 
 class ProblemWithCounties(Exception):
     """Problem with fetch counties"""
+
+
+class NoNumbers(Exception):
+    """Not found numbers"""
+
+
+class NoCountyFound(Exception):
+    """No specific country found"""

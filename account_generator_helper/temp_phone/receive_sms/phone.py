@@ -1,5 +1,5 @@
 from ..receive import phone
-from ..exceptions import ProblemWithFetchNumbers
+from ..exceptions import ProblemWithFetchMessages
 from ..message import Message
 from bs4 import BeautifulSoup
 

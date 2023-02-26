@@ -1,5 +1,6 @@
 from account_generator_helper import Proxies
 
+
 proxies = Proxies()
 
 proxies.parse_proxies()

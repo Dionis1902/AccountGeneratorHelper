@@ -3,6 +3,8 @@ from .phone import Phone
 from account_generator_helper.countries import Counties
 from typing import List
 
+from ..exceptions import NoNumbers
+
 
 class Country:
     def __init__(self, s, country, url):
@@ -28,7 +30,11 @@ class Country:
         """
         :return: Random number.
         """
-        return random.choice(self.get_numbers())
+        numbers = self.get_numbers()
+        if not numbers:
+            raise NoNumbers()
+
+        return random.choice(numbers)
 
     def __repr__(self):
         return '(Country country={})'.format(self._country.name)

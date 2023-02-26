@@ -4,6 +4,7 @@ from .country import Country
 from account_generator_helper.countries import Counties
 from typing import List
 
+from ..exceptions import NoCountyFound
 
 headers = {
   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36'
@@ -33,7 +34,11 @@ class Receive:
         """
         if not self._countries:
             self.get_counties()
-        return self._countries.get(country, None)
+        result = self._countries.get(country, None)
+        if not result:
+            raise NoCountyFound()
+
+        return result
 
     def get_random_country(self) -> Country:
         """

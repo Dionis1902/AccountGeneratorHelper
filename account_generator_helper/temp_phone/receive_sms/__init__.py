@@ -1,7 +1,8 @@
 import re
+
+from ..exceptions import ProblemWithCounties
 from ..receive import Receive
 from bs4 import BeautifulSoup
-from ..exceptions import ProblemWithFetchNumbers
 from .country import Country
 from ...countries import Counties
 
