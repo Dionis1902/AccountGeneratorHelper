@@ -55,7 +55,7 @@ class Letter:
         return ''
 
     def __repr__(self):
-        return '<Letter name={} from_email={} email={} subject={} send_time={}>'.format(self._name, self._from_email,
+        return '(Letter name={} from_email={} email={} subject={} send_time={})'.format(self._name, self._from_email,
                                                                                         self._email, self._subject,
                                                                                         self._send_time.strftime('%Y-%m-%d %H:%M:%S'))
 

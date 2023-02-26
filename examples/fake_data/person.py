@@ -1,5 +1,5 @@
-from account_generator_helper import Person
+from account_generator_helper import generate_person, generate_persons
 
 
-for _ in range(10):
-    print(Person())  # <Person ...>
+print(generate_person())  # Person(gender='female', nam...)
+print(generate_persons(10))  # [Person(gender='female', nam...), Person(gender='female', nam...), ...]

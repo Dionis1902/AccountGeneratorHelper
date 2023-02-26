@@ -58,7 +58,7 @@ class Proxy:
         return True
 
     def __repr__(self):
-        return '<Proxy proxy_type={proxy_type} address={address} port={port} country={country}>'.format(
+        return '(Proxy proxy_type={proxy_type} address={address} port={port} country={country})'.format(
             proxy_type=self.proxy_type.name, address=self._address, port=self._port,
             country=self._country)
 

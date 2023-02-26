@@ -31,4 +31,4 @@ class Phone:
         pass
 
     def __repr__(self):
-        return '<Phone code={} number=+{} country={}>'.format(self._code, self._number, self._country.name)
+        return '(Phone code={} number=+{} country={})'.format(self._code, self._number, self._country.name)

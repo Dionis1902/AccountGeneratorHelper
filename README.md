@@ -152,11 +152,11 @@ mail.poling()
 
 ```python
 # GmailNator
-from account_generator_helper import GmailNator, GmailNatorDomains
+from account_generator_helper import GmailNator
 
 
 mail = GmailNator()
-print('Mail :', mail.set_email('test-mail', GmailNatorDomains.GMAILNATOR_COM))  # Mail : test-mail@gmailnator.com
+print('Mail :', mail.set_email('jo.n.a.thanm.icha.eltmp@gmail.com'))  # Mail : jo.n.a.thanm.icha.eltmp@gmail.com
 
 
 for _letter in mail.get_inbox():
@@ -207,12 +207,13 @@ for message in phone.get_last_messages():
 ### Generate data
 ```python
 # Generate fake person
-from account_generator_helper import Person
+from account_generator_helper import generate_person, generate_persons
 
 
-for _ in range(10):
-    print(Person())  # <Person ...>
+print(generate_person())  # Person(gender='female', nam...
+print(generate_persons(10))  # [Person(gender='female', nam...]
 ```
+
 ```python
 # Utilities
 from account_generator_helper import get_password

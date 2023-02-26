@@ -1,9 +1,7 @@
 import json
-import random
 import requests
 from ..exceptions import ProblemWithGetEmail
 from ..mail import Mail
-from account_generator_helper.utilities import random_string
 from .letter import Letter
 from urllib.parse import unquote
 
@@ -26,7 +24,10 @@ class GmailNator(Mail):
         self.__s.get('https://www.emailnator.com/')
 
     def __get_xsrf_token(self):
-        return unquote(self.__s.cookies.get('XSRF-TOKEN'))
+        token = self.__s.cookies.get('XSRF-TOKEN', '')
+        if not token:
+            print('Some problems, "emailnator.com" may have returned protection from Cloudflare')
+        return unquote(token)
 
     def get_email(self):
         return self.set_email(self.get_email_online())
@@ -50,7 +51,7 @@ class GmailNator(Mail):
 
     def set_email(self, email):
         """
-        Make sure you use the email address associated with this site or it won't work
+        Make sure you use the email address associated with this site, or it won't work
         """
         return self._set_email(email)
 

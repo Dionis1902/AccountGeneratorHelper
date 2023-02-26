@@ -31,4 +31,4 @@ class Country:
         return random.choice(self.get_numbers())
 
     def __repr__(self):
-        return '<Country country={}>'.format(self._country.name)
+        return '(Country country={})'.format(self._country.name)

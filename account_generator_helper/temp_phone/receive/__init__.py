@@ -42,4 +42,4 @@ class Receive:
         return random.choice(self.get_counties())
 
     def __repr__(self):
-        return '<Receive country_count={}>'.format(len(self._countries))
+        return '(Receive country_count={})'.format(len(self._countries))

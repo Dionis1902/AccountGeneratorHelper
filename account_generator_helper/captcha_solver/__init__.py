@@ -36,6 +36,7 @@ class CaptchaSolver:
         }
 
         r = self._s.post('https://cloudmersive.com/ocr-api', data=data, files={'ctl00$MainContent$FileUploadBox': image})
+        print(r.text)
         if not r.ok:
             return ''
         self.__save_data(r.text)

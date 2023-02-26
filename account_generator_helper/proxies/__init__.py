@@ -16,7 +16,7 @@ class Proxies:
 
     def __init__(self):
         self.__proxies: set[Proxy] = set()
-        self.__logger = logging.getLogger('AccountGeneratorHelper')
+        self.__logger = logging.getLogger('account_generator_helper.proxies')
 
     def _proxy_list(self, _):
         urls = [
@@ -29,59 +29,51 @@ class Proxies:
         ]
 
         for url, proxy_type in urls:
-            r = requests.get(url)
+            try:
+                r = requests.get(url, timeout=10)
+            except requests.exceptions.ReadTimeout:
+                return
             if not r.ok:
                 continue
             proxies = r.text.split()
-            self.__logger.debug('{} parsed {} {} proxy'.format(url.split('/api/')[0].split('/v')[0], len(proxies), proxy_type.name))
+            self.__logger.debug(
+                '{} parsed {} {} proxy'.format(url.split('/api/')[0].split('/v')[0], len(proxies), proxy_type.name))
+            result_proxies = set()
             for row in proxies:
-                with self.__lock:
-                    self.__proxies.add(Proxy(proxy_type, *row.split(':'), None))
+                result_proxies.add(Proxy(proxy_type, *row.split(':'), None))
+            with self.__lock:
+                self.__proxies.union(result_proxies)
 
     def _ssl_proxies(self, _):
-        for proxy_type, url in zip([ProxyType.HTTP, ProxyType.HTTPS, ProxyType.SOCKS4], ['https://free-proxy-list.net', 'https://www.sslproxies.org', 'https://www.socks-proxy.net']):
-            resp = requests.get(url)
-            proxies = self._re_proxy(resp.text)
+        for proxy_type, url in zip([ProxyType.HTTP, ProxyType.HTTPS, ProxyType.SOCKS4],
+                                   ['https://free-proxy-list.net', 'https://www.sslproxies.org',
+                                    'https://www.socks-proxy.net']):
+            try:
+                r = requests.get(url, timeout=10)
+            except requests.exceptions.ReadTimeout:
+                return
+            proxies = self._re_proxy(r.text)
             self.__logger.debug('{} parsed {} proxy'.format(url, len(proxies)))
+            result_proxies = set()
+
             for row in proxies:
                 address, port, country = row
                 try:
                     country = Counties(country.upper())
                 except ValueError:
                     country = None
-                with self.__lock:
-                    self.__proxies.add(Proxy(proxy_type, address, port, country))
 
-    def _hide_me(self, max_page):
-        i = 0
-        while True:
-            r = requests.get(f'https://hidemy.name/ua/proxy-list/?start={i * 64}#list', headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36'})
-            if not r.ok:
-                continue
-            page = BeautifulSoup(r.text, 'html.parser')
-            table = page.find('tbody')
-            if not table:
-                continue
-            proxies_rows = table.find_all('tr')
-            for row in proxies_rows:
-                address, port, country, _, proxy_type, _, _ = row.find_all('td')
-                try:
-                    country = getattr(Counties, '_'.join(country.find('span', {'class': 'country'}).text.split(', ')[::-1]).replace(' ', '_').upper())
-                except AttributeError:
-                    country = None
-                with self.__lock:
-                    self.__proxies.add(Proxy(getattr(ProxyType, proxy_type.text.split(',')[0].upper()),
-                                                address.text, port.text, country))
-
-            self.__logger.debug('https://hidemy.name page {} parsed {} proxy'.format(i+1, len(proxies_rows)))
-            if page.find('div', {'class': 'pagination'}).find_all('a')[-1].text.isdigit():
-                break
-            if max_page and max_page == i:
-                break
-            i += 1
+                result_proxies.add(Proxy(proxy_type, address, port, country))
+            with self.__lock:
+                self.__proxies.union(result_proxies)
 
     def _geo_node(self, _):
-        r = requests.get('https://proxylist.geonode.com/api/proxy-list?limit=100000&page=1&sort_by=lastChecked&sort_type=desc')
+        try:
+            r = requests.get(
+                'https://proxylist.geonode.com/api/proxy-list?limit=100000&page=1&sort_by=lastChecked&sort_type=desc',
+                timeout=10)
+        except requests.exceptions.ReadTimeout:
+            return
         if not r.ok:
             return
         data = r.json().get('data', [])
@@ -99,7 +91,12 @@ class Proxies:
     def _advanced(self, max_page):
         i = 1
         while True:
-            r = requests.get(f'https://advanced.name/freeproxy?page={i}')
+            try:
+                r = requests.get(f'https://advanced.name/freeproxy?page={i}', timeout=10)
+            except requests.exceptions.ReadTimeout:
+                return
+            if r.status_code == 403:
+                return
             if not r.ok:
                 continue
             page = BeautifulSoup(r.text, 'html.parser')
@@ -135,11 +132,15 @@ class Proxies:
             ('https://openproxy.space/list/socks5', ProxyType.SOCKS5)
         ]
         for url, proxy_type in urls:
-            r = requests.get(url)
+            try:
+                r = requests.get(url, timeout=10)
+            except requests.exceptions.ReadTimeout:
+                return
             if not r.ok:
                 continue
-            self.__logger.debug('https://openproxy.space parsed {} {} proxy'.format(re.findall('<div class="amount">(\d*)</div>', r.text)[0], proxy_type.name))
-            data = re.findall(r'return \{.*data:(\[\{.*\}\]),added', r.text)[0]
+            self.__logger.debug('https://openproxy.space parsed {} {} proxy'.format(
+                re.findall(r'<div class="amount">(\d*)</div>', r.text)[0], proxy_type.name))
+            data = re.findall(r'return \{.*data:(\[\{.*}]),added', r.text)[0]
             for i in [r',active:\D', r',count:\D']:
                 data = re.sub(i, '', data)
             for i in ['items', 'count', 'code']:
@@ -185,8 +186,8 @@ class Proxies:
         :param max_page: Maximum number of pages from which you need to parse the proxy, 0 if you need to parse all.
         """
         self.__logger.debug('Start parsing proxy')
-        parsers = [self._proxy_list, self._ssl_proxies, self._hide_me, self._geo_node, self._advanced, self._open_proxy]
-        threads = [Thread(target=parser, args=(max_page, ), daemon=True) for parser in parsers]
+        parsers = [self._proxy_list, self._ssl_proxies, self._geo_node, self._advanced, self._open_proxy]
+        threads = [Thread(target=parser, args=(max_page,), daemon=True) for parser in parsers]
         [thread.start() for thread in threads]
         [thread.join() for thread in threads]
         self.__logger.debug('Success parsed {} proxy'.format(len(self.__proxies)))
@@ -200,7 +201,8 @@ class Proxies:
         self.__logger.debug(f'Start testing proxy, workers count = {workers_count}')
         testing_proxies, good_proxies = list(self.__proxies).copy(), set()
         info = [len(testing_proxies)]
-        threads = [Thread(target=self.__worker, args=(testing_proxies, good_proxies, info), daemon=True) for _ in range(workers_count)]
+        threads = [Thread(target=self.__worker, args=(testing_proxies, good_proxies, info), daemon=True) for _ in
+                   range(workers_count)]
         [thread.start() for thread in threads]
         [thread.join() for thread in threads]
         self.__proxies = good_proxies
@@ -220,7 +222,8 @@ class Proxies:
 
     def load(self, file: open):
         data = re.findall(r'(http|socks4|socks5)://(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(\d{2,5})', file.read())
-        [self.__proxies.add(Proxy(ProxyType(proxy_type), address, int(port), None)) for proxy_type, address, port in data]
+        [self.__proxies.add(Proxy(ProxyType(proxy_type), address, int(port), None)) for proxy_type, address, port in
+         data]
 
     def __len__(self):
         return len(self.__proxies)
@@ -229,4 +232,4 @@ class Proxies:
         return iter(self.__proxies)
 
     def __repr__(self):
-        return '<Proxies proxies_count={proxies_count}>'.format(proxies_count=len(self.__proxies))
+        return '(Proxies proxies_count={proxies_count})'.format(proxies_count=len(self.__proxies))

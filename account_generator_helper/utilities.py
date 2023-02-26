@@ -1,7 +1,5 @@
 import random
-import re
 import string
-from urllib.parse import quote
 from datetime import timedelta
 
 try:
@@ -10,11 +8,9 @@ except ImportError:
     from html.parser import HTMLParser
     unescape = HTMLParser().unescape
 
-LETTERS = string.ascii_letters + '1234567890'
-
 
 def random_string():
-    return ''.join([random.choice(LETTERS) for _ in range(12)])
+    return ''.join([random.choice(string.ascii_letters + string.digits) for _ in range(12)])
 
 
 def str_to_timedelta(string_time):
@@ -34,5 +30,3 @@ def str_to_timedelta(string_time):
     return timedelta()
 
 
-def camel_to_snake(text):
-    return re.sub(r'(?<!^)(?=[A-Z])', '_', text).lower()

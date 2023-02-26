@@ -30,5 +30,5 @@ class Message:
         return self._send_time
 
     def __repr__(self):
-        return '<Message from={} message={} send_time={}>'.format(self._sender_name, self._message,
+        return '(Message from={} message={} send_time={})'.format(self._sender_name, self._message,
                                                                   self._send_time.strftime('%Y-%m-%d %H:%M:%S'))

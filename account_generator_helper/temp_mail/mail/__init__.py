@@ -26,7 +26,7 @@ class Mail:
         return self.set_email(random_string())
 
     def set_email(self, *args, **kwargs):
-        pass
+        return self._set_email(args[0])
 
     def _set_email(self, mail):
         self._email = mail
@@ -86,4 +86,4 @@ class Mail:
             pass
 
     def __repr__(self):
-        return '<{class_name} email={email}>'.format(class_name=self.__class__.__name__, email=self._email)
+        return '({class_name} email={email})'.format(class_name=self.__class__.__name__, email=self._email)
