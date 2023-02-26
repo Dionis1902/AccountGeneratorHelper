@@ -41,6 +41,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     python_requires='>=3',
-    keywords='python email captcha proxy pypi sms gmail temp-mail captcha-solving captcha-solver fake-data account-generator captcha-recognition fake-data-generator free-proxy recive-sms gmailnator gmailnator-api poxies',
+    keywords='python email captcha proxy pypi sms gmail temp-mail captcha-solving captcha-solver fake-data account-generator captcha-recognition '
+             'fake-data-generator free-proxy recive-sms gmailnator gmailnator-api poxies',
     install_requires=required
 )

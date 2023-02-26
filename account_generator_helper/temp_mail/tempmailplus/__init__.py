@@ -1,5 +1,4 @@
 import random
-import requests
 from .letter import Letter
 from ..exceptions import NotSetEmail
 from ..mail import Mail
@@ -30,7 +29,7 @@ class TempMailPlus(Mail):
         if not self._email:
             raise NotSetEmail()
 
-        r = requests.get(f'https://tempmail.plus/api/mails?email={self._email}&limit=100')
+        r = self._s.get(f'https://tempmail.plus/api/mails?email={self._email}&limit=100')
         if r.status_code == 200:
             return [Letter(self._email, _letter, self._proxies) for _letter in r.json()['mail_list']]
         return []

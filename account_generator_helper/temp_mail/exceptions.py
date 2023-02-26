@@ -4,3 +4,7 @@ class NotSetEmail(Exception):
 
 class ProblemWithGetEmail(Exception):
     """Problem receiving email"""
+
+
+class CloudflareDetect(Exception):
+    """Detect Cloudflare protection"""

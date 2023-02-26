@@ -2,13 +2,12 @@ class Letter:
     """
     Base class of letter
     """
-    def __init__(self, email, name, from_email, subject, send_time, proxies, letter_id=None):
+    def __init__(self, email, name, from_email, subject, send_time, letter_id=None):
         self._email = email
         self._name = name
         self._from_email = from_email
         self._subject = subject
         self._send_time = send_time
-        self._proxies = proxies
         self._letter = None
         self._letter_id = letter_id
 

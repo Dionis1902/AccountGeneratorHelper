@@ -22,8 +22,7 @@ class Letter(letter.Letter):
         if self._letter:
             return self._letter
         payload = json.dumps({'email': self._email, 'messageID': self._letter_id})
-        r = self._s.post('https://www.emailnator.com/message-list', proxies=self._proxies, data=payload,
-                         headers={**headers, 'x-xsrf-token': self._token})
+        r = self._s.post('https://www.emailnator.com/message-list', data=payload, headers={**headers, 'x-xsrf-token': self._token})
         if r.status_code == 200:
             self._letter = re.sub(header_regex, '', r.text)
             return self._letter

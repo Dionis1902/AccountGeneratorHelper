@@ -1,5 +1,8 @@
 import re
 import time
+
+import requests
+
 from account_generator_helper.utilities import random_string
 from .letter import Letter
 from typing import List
@@ -16,6 +19,10 @@ class Mail:
         self._email = None
         self._proxies = {'http': proxy, 'https': proxy} if proxy else None
         self._handlers = []
+
+        self._s = requests.Session()
+        if proxy:
+            self._s.proxies.update(self._proxies)
 
     def get_email(self, *args, **kwargs) -> str:
         """

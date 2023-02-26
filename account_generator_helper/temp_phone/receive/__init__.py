@@ -25,16 +25,16 @@ class Receive:
         """
         pass
 
-    def get_country(self, country: Counties) -> Country:
+    def get_country(self, phone_country: Counties) -> Country:
         """
         Method returns object of the country, from this object you can get the phone number of this country.
 
-        :param country: Country.
+        :param phone_country: Country.
         :return: Country object.
         """
         if not self._countries:
             self.get_counties()
-        result = self._countries.get(country, None)
+        result = self._countries.get(phone_country, None)
         if not result:
             raise NoCountyFound()
 

@@ -23,8 +23,8 @@ class Country(country.Country):
             except AttributeError:
                 _is_need_break = True
 
-            return [Phone(self._s, self._country, e.find('a')['href'], re.findall(r'.*/(\d*)/', e.find('a')['href'])[0], page.find('h1').text.split()[-1]) for e in page.find_all('li', {'class': 'wow'})], \
-                _is_need_break
+            return [Phone(self._s, self._country, e.find('a')['href'], re.findall(r'.*/(\d*)/', e.find('a')['href'])[0], page.find('h1').text.split()[-1])
+                    for e in page.find_all('li', {'class': 'wow'})], _is_need_break
 
         i = 0
         while True:

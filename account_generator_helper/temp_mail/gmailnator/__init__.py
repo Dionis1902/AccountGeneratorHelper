@@ -1,6 +1,5 @@
 import json
-import requests
-from ..exceptions import ProblemWithGetEmail
+from ..exceptions import ProblemWithGetEmail, CloudflareDetect
 from ..mail import Mail
 from .letter import Letter
 from urllib.parse import unquote
@@ -18,15 +17,14 @@ class GmailNator(Mail):
 
     def __init__(self, proxy=None):
         super().__init__(proxy)
-        self.__s = requests.Session()
-        if proxy:
-            self.__s.proxies.update(self._proxies)
-        self.__s.get('https://www.emailnator.com/')
+        r = self._s.get('https://www.emailnator.com/')
+        if r.status_code == 403:
+            raise CloudflareDetect()
 
     def __get_xsrf_token(self):
-        token = self.__s.cookies.get('XSRF-TOKEN', '')
+        token = self._s.cookies.get('XSRF-TOKEN', '')
         if not token:
-            print('Some problems, "emailnator.com" may have returned protection from Cloudflare')
+            raise CloudflareDetect()
         return unquote(token)
 
     def get_email(self):
@@ -43,8 +41,8 @@ class GmailNator(Mail):
         """
         data = ['domain', 'plusGmail', 'dotGmail']
         payload = json.dumps({'email': [i for i, k in zip(data, [use_custom_domain, use_plus, use_point]) if k]})
-        r = self.__s.post('https://www.emailnator.com/generate-email',
-                          headers={**headers, 'x-xsrf-token': self.__get_xsrf_token()}, data=payload)
+        r = self._s.post('https://www.emailnator.com/generate-email',
+                         headers={**headers, 'x-xsrf-token': self.__get_xsrf_token()}, data=payload)
         if r.status_code == 200:
             return self._set_email(r.json()['email'][0])
         raise ProblemWithGetEmail()
@@ -57,9 +55,9 @@ class GmailNator(Mail):
 
     def get_inbox(self):
         payload = json.dumps({'email': self._email})
-        r = self.__s.post('https://www.emailnator.com/message-list',
-                          headers={**headers, 'x-xsrf-token': self.__get_xsrf_token()}, data=payload)
+        r = self._s.post('https://www.emailnator.com/message-list',
+                         headers={**headers, 'x-xsrf-token': self.__get_xsrf_token()}, data=payload)
         if r.status_code == 200:
-            return [Letter(self._email, _letter, self._proxies, self.__get_xsrf_token(), self.__s) for _letter in r.json()['messageData'] if
+            return [Letter(self._email, _letter, self._proxies, self.__get_xsrf_token(), self._s) for _letter in r.json()['messageData'] if
                     'ADS' not in _letter['messageID']]
         return []
