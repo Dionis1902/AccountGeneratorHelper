@@ -9,4 +9,4 @@ from .captcha_solver import CaptchaSolver
 
 __author__ = 'Dionis1902'
 __email__ = 'den70007.ua@gmail.com'
-__version__ = '1.0.11'
+__version__ = '1.0.12'
