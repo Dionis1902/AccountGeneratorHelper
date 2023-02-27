@@ -31,5 +31,5 @@ class TempMailPlus(Mail):
 
         r = self._s.get(f'https://tempmail.plus/api/mails?email={self._email}&limit=100')
         if r.status_code == 200:
-            return [Letter(self._email, _letter, self._proxies) for _letter in r.json()['mail_list']]
+            return [Letter(self._email, _letter, self._s) for _letter in r.json()['mail_list']]
         return []
