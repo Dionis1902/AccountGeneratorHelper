@@ -6,7 +6,7 @@ from datetime import datetime
 class Letter(letter.Letter):
     def __init__(self, url, headers, timestamp, session):
         if '<' in headers['from']:
-            name, from_email = re.findall(r'(.*) <(.*)>', headers['from'])[0]
+            name, from_email = re.findall(r'^(.*) <(.*)>$', headers['from'])[0]
         else:
             name = from_email = headers['from']
         super().__init__(headers['to'], name, from_email, headers['subject'], datetime.fromtimestamp(timestamp))

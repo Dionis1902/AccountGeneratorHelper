@@ -11,11 +11,14 @@ headers = {
 
 
 class Letter(letter.Letter):
-    def __init__(self, to, content, proxies, token, session):
+    def __init__(self, to, content, token, session):
         self._token = token
         self._s = session
-        letter_id, _from, subject = content['messageID'], content['from'], content['subject']
-        super().__init__(to, *re.findall(r'(.*) <(.*)>', _from)[0], subject, datetime.fromtimestamp(0), proxies, letter_id)
+        if '<' in content['from']:
+            name, from_email = re.findall(r'^(.*) <(.*)>$', content['from'])[0]
+        else:
+            name = from_email = content['from']
+        super().__init__(to, name, from_email, content['subject'], datetime.fromtimestamp(0), content['messageID'])
 
     @property
     def letter(self):

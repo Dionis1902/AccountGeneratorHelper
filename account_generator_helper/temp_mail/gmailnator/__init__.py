@@ -58,6 +58,6 @@ class GmailNator(Mail):
         r = self._s.post('https://www.emailnator.com/message-list',
                          headers={**headers, 'x-xsrf-token': self.__get_xsrf_token()}, data=payload)
         if r.status_code == 200:
-            return [Letter(self._email, _letter, self._proxies, self.__get_xsrf_token(), self._s) for _letter in r.json()['messageData'] if
+            return [Letter(self._email, _letter, self.__get_xsrf_token(), self._s) for _letter in r.json()['messageData'] if
                     'ADS' not in _letter['messageID']]
         return []

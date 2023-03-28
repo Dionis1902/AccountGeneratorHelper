@@ -7,7 +7,7 @@ from datetime import datetime
 class Letter(letter.Letter):
     def __init__(self, to, from_email, subject, timestamp, body):
         if '<' in from_email:
-            name, from_email = re.findall(r'(.*) <(.*)>', from_email)[0]
+            name, from_email = re.findall(r'^(.*) <(.*)>$', from_email)[0]
         else:
             name = from_email = from_email
 
